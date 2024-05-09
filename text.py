@@ -1,3 +1,56 @@
+from sentencepiece import SentencePieceProcessor  # Assuming SentencePiece for text processing
+from faiss import FAISS, IndexFlatL2  # Import FAISS for vector store
+from sentence_transformers import SentenceTransformer, util  # Import for embeddings
+
+
+def get_text_from_txt(txt_files):
+  """
+  Extracts text from a list of txt files.
+
+  Args:
+      txt_files: A list of paths to txt files.
+
+  Returns:
+      A string containing the combined text from all files.
+  """
+  text = ""
+  for txt_file in txt_files:
+    with open(txt_file, 'r') as f:
+      text += f.read()
+  return text
+
+def get_text_chunks(text):
+  """
+  Splits the text into chunks of a specified size with overlap.
+
+  Args:
+      text: The entire text string.
+
+  Returns:
+      A list of text chunks.
+  """
+  text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=20)
+  chunks = text_splitter.split_text(text)
+  return chunks
+
+def get_vector_store(text_chunks):
+  """
+  Creates a vector store from the text chunks using GooglePalmEmbeddings.
+
+  Args:
+      text_chunks: A list of text chunks.
+
+  Returns:
+      A FAISS vector store.
+  """
+  embeddings = GooglePalmEmbeddings()
+  vector_store = FAISS.from_texts(text_chunks, embedding=embeddings)
+  return vector_store
+
+
+
+'''
+THIS SECTION IS FR TESTING DIFFERENT METHOD OF SPLITTING THE TEXT AND THUS SHOULD BE USED TO EVALUATE THE RESULTS 
 from typing import AsyncIterator, Iterator
 
 from langchain_core.document_loaders import BaseLoader
@@ -49,3 +102,4 @@ class CustomDocumentLoader(BaseLoader):
                     metadata={"line_number": line_number, "source": self.file_path},
                 )
                 line_number += 1
+'''
