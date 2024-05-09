@@ -54,3 +54,18 @@ def get_vector_store(text_chunks):
   Returns:
       A FAISS vector store.
   """
+  embeddings = GooglePalmEmbeddings(google_api_key = API)
+
+  # Replace GooglePalmEmbeddings with a suitable text embedding library (e.g., sentence-transformers)
+  # model_name = "all-mpnet-base-v2"  # Example model name for sentence-transformers
+  # model = SentenceTransformer(model_name)
+  # embeddings = model.encode(text_chunks)
+
+  # Implement your chosen text embedding logic here
+  # This example uses a placeholder - replace with actual embedding generation
+  #embeddings = [[1.0, 2.0] for _ in text_chunks]  # Placeholder for demonstration
+
+  vector_store = FAISS.from_texts(text_chunks, embedding=embeddings)
+  return vector_store
+
+
