@@ -62,5 +62,25 @@ def main():
     store_embeddings_in_pgvector(text_chunks, pg_connection_string)
 
 
+"""
+from langchain_cohere import CohereEmbeddings
+from langchain_core.documents import Document
+from langchain_postgres import PGVector
+from langchain_postgres.vectorstores import PGVector
+
+connection = "postgresql+psycopg://langchain:langchain@localhost:6024/langchain"  # Uses psycopg3!
+collection_name = "my_docs"
+embeddings = CohereEmbeddings()
+
+vectorstore = PGVector(
+    embeddings=embeddings,
+    collection_name=collection_name,
+    connection=connection,
+    use_jsonb=True,
+)
+
+"""
+
+
 if __name__ == "__main__":
     main()
